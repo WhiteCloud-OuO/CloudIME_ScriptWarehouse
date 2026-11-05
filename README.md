@@ -5,7 +5,9 @@
 ### 如何使用？
 
 打开「云朵输入法设置 → 脚本」，点「在线获取脚本」，列表里每一行的「获取」会下载并安装对应的脚本及配套文件。
-装完点「重启输入法服务」生效。也可以用 `git clone` 本仓库，按下面的「目录」把文件手动放进安装目录的 `Scripts\`。
+每个脚本装进安装目录 `Scripts\<脚本 id>\`：入口 `.lua` 在文件夹根部，共享 Lua / 布局 / DLL 分别在
+`shared\` / `layouts\` / `dlls\`。装完点「重启输入法服务」生效。
+也可以用 `git clone` 本仓库，按下面的「目录」把文件手动放进安装目录的 `Scripts\<脚本 id>\`。
 
 ### 目录
 
@@ -17,31 +19,33 @@
 
 ### 新增脚本
 
-在 `src\` 下建一个目录放脚本与配套文件，然后在 `index.json` 的 `scripts` 里加一项：
+在 `src\` 下建一个目录放脚本与配套文件，然后在 `index.json` 的 `scripts` 里加一项。
+`id` 会当安装后的**文件夹名**，只能用普通文件夹名（不能有 `/` `\`、不能是 `..`、不能是 Windows 保留名）；
+`files` 里必须**正好有一个** `target = "script"` 的入口 `.lua`：
 
 ```json
 {
-  "id": "唯一标识",
-  "name": "显示名",
+  "id": "niutrans-window",
+  "name": "小牛整句翻译（独立窗口）",
   "description": "一句话介绍",
   "files": [
-    { "path": "src/目录/main.lua", "target": "script" },
-    { "path": "src/目录/shared.lua", "target": "shared" },
-    { "path": "src/目录/window.json", "target": "layout" },
-    { "path": "src/目录/native.dll", "target": "dll" }
+    { "path": "src/小牛整句翻译（独立窗口）/niutrans-window.lua", "target": "script" },
+    { "path": "src/小牛整句翻译（独立窗口）/md5.lua", "target": "shared" },
+    { "path": "src/小牛整句翻译（独立窗口）/niutrans-window.json", "target": "layout" },
+    { "path": "src/小牛整句翻译（独立窗口）/native.dll", "target": "dll" }
   ]
 }
 ```
 
-`target` 决定文件装到安装目录 `Scripts\` 的哪里：
+`target` 决定文件装到 `Scripts\<id>\` 的哪里：
 
 | target | 安装位置 | 约束 |
 |---|---|---|
-| `script` | `Scripts\` 根目录 | 必须是 `.lua`；装进去才会被输入法加载 |
-| `shared` | `Scripts\shared\` | 共享 Lua |
-| `layout` | `Scripts\layouts\` | 布局 JSON |
-| `dll` | `Scripts\dlls\` | 动态库 |
+| `script` | `Scripts\<id>\` 根部 | 必须是 `.lua`；正好一个，作为脚本入口 |
+| `shared` | `Scripts\<id>\shared\` | 共享 Lua |
+| `layout` | `Scripts\<id>\layouts\` | 布局 JSON |
+| `dll` | `Scripts\<id>\dlls\` | 动态库 |
 
 安装时只取 `path` 的文件名（目录结构只用于本仓库组织源码），所以同一个脚本里两个文件不能落到同一位置。
 客户端会先下载全部文件再写盘：目标已存在且内容相同就跳过，内容不同则整份不装，提示用户先删旧文件。
-索引版本固定为 `1`；`id` 不能重复，`name` 不能为空。
+索引版本固定为 `2`；`id` 不能重复，`name` 不能为空。
