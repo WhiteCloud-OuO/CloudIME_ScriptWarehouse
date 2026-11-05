@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "scripts": [
+    {
+      "id": "niutrans-candidate",
+      "name": "小牛候选翻译",
+      "description": "在候选窗底部显示小牛翻译结果；需要在小牛翻译开放平台申请 API Key（脚本内填写）。",
+      "files": [
+        { "path": "src/小牛候选翻译/example-niutrans.lua", "target": "script" },
+        { "path": "src/小牛候选翻译/md5.lua", "target": "shared" }
+      ]
+    },
+    {
+      "id": "niutrans-window",
+      "name": "小牛整句翻译（独立窗口）",
+      "description": "小牛整句翻译独立窗口；含布局 JSON 与 md5.lua。",
+      "files": [
+        { "path": "src/小牛整句翻译（独立窗口）/niutrans-window.lua", "target": "script" },
+        { "path": "src/小牛整句翻译（独立窗口）/niutrans-window.json", "target": "layout" },
+        { "path": "src/小牛整句翻译（独立窗口）/md5.lua", "target": "shared" }
+      ]
+    },
+    {
+      "id": "online-search",
+      "name": "在线查询（有道+汉典）",
+      "description": "在线查询窗口（有道 + 汉典）；含布局 JSON。",
+      "files": [
+        { "path": "src/在线查询（有道+汉典）/fast-searching-online.lua", "target": "script" },
+        { "path": "src/在线查询（有道+汉典）/fast-searching-online.json", "target": "layout" }
+      ]
+    }
+  ]
+}
